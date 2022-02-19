@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../helpers/num_translation.dart';
 
 class ConvertNumberScreen extends StatefulWidget {
   const ConvertNumberScreen({Key? key}) : super(key: key);
@@ -9,7 +12,8 @@ class ConvertNumberScreen extends StatefulWidget {
 
 class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
   final _controller = TextEditingController();
-  var _enteredNumber = 0;
+  String _output = '*Numer to words*';
+  int _enteredNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,11 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
         centerTitle: true,
         title: InkWell(
           onTap: () {
-            print('Title clicked');
+            setState(() {
+              _output = '*Number to words*';
+              _controller.clear();
+            });
+            print('*RESET*');
           },
           child: const Text(
             'Tap to reset',
@@ -39,7 +47,8 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
           ),
           Container(
             child: Text(
-              '*Numer to words*',
+              _output,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.black45,
                 fontSize: 20,
@@ -65,6 +74,11 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
                 textAlign: TextAlign.center,
                 onSubmitted: (value) {
                   _enteredNumber = int.parse(value);
+                  setState(() {
+                    _output =
+                        Provider.of<NumTranslation>(context, listen: false)
+                            .translate(_enteredNumber);
+                  });
                 },
               ),
             ),
