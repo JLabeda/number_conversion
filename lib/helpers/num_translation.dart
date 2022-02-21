@@ -47,6 +47,15 @@ class NumTranslation with ChangeNotifier {
     return tens[i];
   }
 
+  List<String> strings = [
+    'thousand',
+    'million',
+    'billion',
+    'trillion',
+    'quadrillion',
+    'quintillion',
+  ];
+
   String _zeroToHundred(int number) {
     String _text;
     if (number < 10) {
@@ -81,20 +90,15 @@ class NumTranslation with ChangeNotifier {
   }
 
   String translate(int number) {
-    String _text;
-    if (number < 1000) {
-      _text = _hundreds(number);
-    } else if (number >= 1000 && number < 1000000) {
-      int _reducedNum = number ~/ 1000;
-      int _remainder = number % 1000;
-      if (number % 1000 == 0) {
-        _text = '${_hundreds(_reducedNum)} thousand';
-      } else {
-        _text = '${_hundreds(_reducedNum)} thousand ${_hundreds(_remainder)}';
-      }
-    } else {
-      _text = 'Please enter a number smaller than 1 million';
+    int _iterations = (number.toString().length / 3).ceil();
+    String _text = '';
+    int _remainder = number % 1000;
+    for (int i = 1; i < _iterations; i++) {
+      number = number ~/ 1000;
+      int _rest = number % 1000;
+      _text = '${_hundreds(_rest)} ${strings[i - 1]} ' + _text;
     }
+    _text = _text + _hundreds(_remainder);
     notifyListeners();
     return _text;
   }

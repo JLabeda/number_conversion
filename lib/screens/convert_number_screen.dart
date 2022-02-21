@@ -15,6 +15,17 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
   String _output = '*Numer to words*';
   int _enteredNumber = 0;
 
+  Future<dynamic> _assign(String value) async {
+    try {
+      _enteredNumber = int.parse(value);
+      _output = Provider.of<NumTranslation>(context, listen: false)
+          .translate(_enteredNumber);
+    } catch (error) {
+      return _output = 'Please enter a smaller number :-)';
+    }
+    return _enteredNumber;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +56,12 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
           const SizedBox(
             height: 100,
           ),
-          Container(
-            child: Text(
-              _output,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.black45,
-                fontSize: 20,
-              ),
+          Text(
+            _output,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.black45,
+              fontSize: 20,
             ),
           ),
           const SizedBox(
@@ -73,11 +82,9 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 onSubmitted: (value) {
-                  _enteredNumber = int.parse(value);
+                  // _enteredNumber
                   setState(() {
-                    _output =
-                        Provider.of<NumTranslation>(context, listen: false)
-                            .translate(_enteredNumber);
+                    _assign(value);
                   });
                 },
               ),
