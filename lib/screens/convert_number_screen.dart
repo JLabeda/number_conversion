@@ -82,7 +82,6 @@ class _ConvertNumberScreenState extends State<ConvertNumberScreen> {
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 onSubmitted: (value) {
-                  // _enteredNumber
                   setState(() {
                     _assign(value);
                   });
